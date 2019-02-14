@@ -94,5 +94,25 @@ public class OpenShiftDataBaseHelper {
 			System.out.println(e.getMessage());
 		}
 	}
+	
+	public List<Data> doDML(String transaction) {
+		List<Data> processData = new ArrayList<>();
+		PreparedStatement st;
 
+		try {
+			st = cn().prepareStatement(transaction);
+			st.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			Data data = new Data();
+			data.setErrorMessage("An error occured: " + e.getMessage());
+			processData.add(data);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			Data data = new Data();
+			data.setErrorMessage("An error occured: " + e.getMessage());
+			processData.add(data);
+		}
+		return processData;
+	}
 }

@@ -77,5 +77,45 @@ public class DataService {
 		String result = "" + jsonObject;
 		return Response.status(200).entity(result).build();
 	}
+	
+	@Path("/dml")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response doDML(String data) {
+		boolean status = true;
+		String errorMessage = null;
+		List<Data> resultData = new ArrayList<>();
+		JSONObject jsonObject = new JSONObject();
+		JSONObject dataPosted = new JSONObject(data);
+		String queryString = dataPosted.getString("data");
+		try {
+			resultData = new OpenShiftDataBaseHelper().doDML(queryString.trim());
+			for(Data d : resultData) {
+				if(!d.getErrorMessage().isEmpty()) {
+					status = false;
+					errorMessage = d.getErrorMessage();
+					break;
+				}
+			}
+			
+			if(status) {
+				jsonObject.put("success", "true");
+				jsonObject.put("message", "Operation Completed succesfully");
+			} else {
+				jsonObject.put("success", "false");
+				jsonObject.put("message", "An error occurred: " + errorMessage);
+			}
+			jsonObject.put("status", "completed");
+			jsonObject.put("data", queryString);
+			
+		} catch (Exception e) {
+			jsonObject.put("success", "false");
+			jsonObject.put("message", "Error occured when doing operation: "+ e.getMessage());
+			jsonObject.put("status", "aborted");
+		}
+		String result = "" + jsonObject;
+		return Response.status(200).entity(result).build();
+	}
 
 }
