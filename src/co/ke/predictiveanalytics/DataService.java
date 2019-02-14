@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import co.ke.predictiveanalytics.helpers.DataBaseHelper;
+import co.ke.predictiveanalytics.helpers.OpenShiftDataBaseHelper;
 import co.ke.predictiveanalytics.model.Data;
  
 @Path("/service")
@@ -45,15 +46,15 @@ public class DataService {
 		
 		JSONObject jsonObject = new JSONObject();
 		try {
-			//new DataBaseHelper().
-			//insertUpdateData("U",data.getDataId(),data.getDataName(),data.getDataDate().toString());
+			new OpenShiftDataBaseHelper().
+			getTableData();
 			jsonObject.put("data", data);
 			jsonObject.put("success", "true");
 			jsonObject.put("message", "data updated succesfully");
 			
 		} catch (Exception e) {
 			jsonObject.put("success", "false");
-			jsonObject.put("message", "error updating data");
+			jsonObject.put("message", "Error updating data. "+ e.getMessage());
 		}
 		String result = "" + jsonObject;
 		return Response.status(200).entity(result).build();
