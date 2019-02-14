@@ -39,6 +39,7 @@ public class DataService {
 	
 	@Path("/update")
 	@POST
+	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateData(String data) {
 		
