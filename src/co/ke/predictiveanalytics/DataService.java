@@ -1,5 +1,8 @@
 package co.ke.predictiveanalytics;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -43,18 +46,33 @@ public class DataService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateData(String data) {
-		
+		List<Data> resultData = new ArrayList<>();
 		JSONObject jsonObject = new JSONObject();
 		try {
-			new OpenShiftDataBaseHelper().
+			resultData = new OpenShiftDataBaseHelper().
 			getTableData();
+			for(Data d : resultData) {
+				if(!d.getErrorMessage().isEmpty()) {
+					jsonObject.put("success", "false");
+					jsonObject.put("message", "An error occurred: " + d.getErrorMessage());
+					break;
+				}
+			}
+			jsonObject.put("status", "completed");
+			/*
+			 * 
+			 * } else {
+					jsonObject.put("success", "true");
+					jsonObject.put("message", "data updated succesfully");
+					
+				}
+			 * */	
 			jsonObject.put("data", data);
-			jsonObject.put("success", "true");
-			jsonObject.put("message", "data updated succesfully");
 			
 		} catch (Exception e) {
 			jsonObject.put("success", "false");
 			jsonObject.put("message", "Error updating data. "+ e.getMessage());
+			jsonObject.put("status", "aborted");
 		}
 		String result = "" + jsonObject;
 		return Response.status(200).entity(result).build();

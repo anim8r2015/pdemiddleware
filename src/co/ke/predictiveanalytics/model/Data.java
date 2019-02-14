@@ -7,7 +7,14 @@ public class Data {
 	private int dataId;
 	private String dataName;
 	private Date dataDate;
+	private String errorMessage;
 	
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
+	}
 	public int getDataId() {
 		return dataId;
 	}

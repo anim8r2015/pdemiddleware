@@ -58,7 +58,9 @@ public class OpenShiftDataBaseHelper {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			Data data = new Data();
+			data.setErrorMessage(e.getMessage());
+			dataList.add(data);
 		}
 		return dataList;
 	}
