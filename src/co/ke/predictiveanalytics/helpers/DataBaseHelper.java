@@ -46,45 +46,54 @@ public class DataBaseHelper {
 				data.setDataId(rs.getInt("data_id"));
 				data.setDataName(rs.getString("data_name"));
 				data.setDataDate(rs.getDate("data_date"));
+				data.setErrorMessage("");
 				dataList.add(data);
 			}
 
 		} catch (Exception e) {
+			Data data = new Data();
+			data.setErrorMessage("Error while processing: " + e.getMessage());
+			dataList.add(data);
 			e.printStackTrace();
 		}
 		return dataList;
 	}
 
-	public void insertUpdateData(String transaction, int Id, String name, String date) {
+	public List<Data> insertUpdateData(String transaction, int Id, String name, String date) {
+		List<Data> processData = new ArrayList<>();
 		PreparedStatement st;
-
 		Date date1 = null;
 
 		try {
-
 			date1 = new java.sql.Date(new SimpleDateFormat("dd-MM-yyyy").parse(date).getTime());
 			if (transaction.equalsIgnoreCase("A")) {
 				st = cn().prepareStatement("INSERT INTO pde_data (data_id, data_name, data_date) " + "VALUES(?,?,?)");
-				st.setString(1, String.valueOf(Id));
+				st.setInt(1, Id);
 				st.setString(2, name);
 				st.setDate(3, date1);
-
 			} else { // edit
 				st = cn().prepareStatement(
 						"UPDATE pde_data SET data_name = '" + name + "', data_date = " + date + " WHERE data_id = " +
-
 								Id + "");
 			}
-
 			st.executeUpdate();
-
+			Data data = new Data();
+			data.setErrorMessage("");
+			processData.add(data);
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+			Data data = new Data();
+			data.setErrorMessage("An error occured: " + e.getMessage());
+			processData.add(data);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			Data data = new Data();
+			data.setErrorMessage("An error occured: " + e.getMessage());
+			processData.add(data);
 		}
+		return processData;
 	}
-
+	
 	public void doDML(String transaction) {
 		PreparedStatement st;
 
@@ -98,5 +107,7 @@ public class DataBaseHelper {
 			System.out.println(e.getMessage());
 		}
 	}
+	
+	
 
 }
