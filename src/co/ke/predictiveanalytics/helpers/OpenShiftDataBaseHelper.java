@@ -54,6 +54,7 @@ public class OpenShiftDataBaseHelper {
 				data.setDataId(rs.getInt("data_id"));
 				data.setDataName(rs.getString("data_name"));
 				data.setDataDate(rs.getDate("data_date"));
+				data.setErrorMessage("");
 				dataList.add(data);
 			}
 
