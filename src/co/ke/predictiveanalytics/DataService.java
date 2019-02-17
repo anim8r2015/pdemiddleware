@@ -23,7 +23,7 @@ import co.ke.predictiveanalytics.model.DataModel;
 @Path("/service")
 public class DataService {
 
-	@Path("savebatch")
+	@Path("/savebatch")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
