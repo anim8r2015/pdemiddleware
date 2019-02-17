@@ -20,6 +20,15 @@ public class DataModel {
     private String rectitle;
     private String recmessage;
     private String recbrowsercreated;
+    private String recphoneid;
+    
+    public String getRecphoneid() {
+        return recphoneid;
+    }
+
+    public void setRecphoneid(String recphoneid) {
+        this.recphoneid = recphoneid;
+    }
 
     public String getRecordid() {
         return recordid;

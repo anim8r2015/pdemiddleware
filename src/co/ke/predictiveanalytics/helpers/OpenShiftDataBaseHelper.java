@@ -126,22 +126,57 @@ public class OpenShiftDataBaseHelper {
 		return processData;
 	}
 	
+	private java.sql.Date convertLongtoDate(String date){
+		return new java.sql.Date(Long.valueOf(date));
+	}
+	
 	public List<Data> insertUpdateDataObject(DataModel dataModel) {
 		List<Data> processData = new ArrayList<>();
 		PreparedStatement st;
-		Date date1 = null;
+		Date dateBrowserCreated = null, dateRecDateTime = null, dateRecVisitDateTime = null, dateSyncDateTime = null;
 
 		try {
 			if(dataModel.getRecbrowsercreated() != null) {
 				//date1 = new java.sql.Date(new SimpleDateFormat("dd-MM-yyyy").parse(dataModel.get).getTime());
-				date1 = new java.sql.Date(Long.valueOf(dataModel.getRecbrowsercreated()));
+				dateBrowserCreated = convertLongtoDate(dataModel.getRecbrowsercreated());
 			}
 			
+			if(dataModel.getRecdatetime() != null) {
+				dateRecDateTime = convertLongtoDate(dataModel.getRecdatetime());
+			}
 			
-				st = cn().prepareStatement("INSERT INTO pde_data (data_id, data_name, data_date) " + "VALUES(?,?,?)");
-				//st.setInt(1, Id);
-				//st.setString(2, name);
-				//st.setDate(3, date1);
+			if(dataModel.getRecsyncdatetime() != null) {
+				dateSyncDateTime = convertLongtoDate(dataModel.getRecsyncdatetime());
+			}
+			
+			if(dataModel.getRecvisitdate() != null) {
+				dateRecVisitDateTime = convertLongtoDate(dataModel.getRecvisitdate());
+			}
+			
+			st = cn().prepareStatement("INSERT INTO pde_phone_data (recordid, recdatetime, reccategory, "
+					+ "recdirection, reccontactname, reccontactnumber, recsyncdatetime, reclatitude, "
+					+ "reclongitude, recsyncedbool, recduration, recurl, recvisits, recvisitdate, "
+					+ "recbookmark, rectitle, recmessage, recbrowsercreated, recphoneid) "
+					+ "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+				st.setString(1, dataModel.getRecordid());
+				st.setDate(2, dateRecDateTime);
+				st.setString(3, dataModel.getReccategory());
+				st.setString(4, dataModel.getRecdirection());
+				st.setString(5, dataModel.getReccontactname());
+				st.setString(6, dataModel.getReccontactnumber());
+				st.setDate(7, dateSyncDateTime);
+				st.setString(8, dataModel.getReclatitude());
+				st.setString(9, dataModel.getReclongitude());
+				st.setString(10,"Y"); // Y for synced
+				st.setString(11, dataModel.getRecduration());
+				st.setString(12, dataModel.getRecurl());
+				st.setString(13, dataModel.getRecvisits());
+				st.setDate(14, dateRecVisitDateTime);
+				st.setString(15, dataModel.getRecbookmark());
+				st.setString(16, dataModel.getRectitle());
+				st.setString(17, dataModel.getRecmessage());			
+				st.setDate(18, dateBrowserCreated);
+				st.setString(19, dataModel.getRecphoneid());
 			
 			st.executeUpdate();
 			Data data = new Data();
@@ -166,5 +201,4 @@ public class OpenShiftDataBaseHelper {
 		}
 		return processData;
 	}
-
 }
