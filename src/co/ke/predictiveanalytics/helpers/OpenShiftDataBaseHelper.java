@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.ke.predictiveanalytics.model.Data;
+import co.ke.predictiveanalytics.model.DataModel;
 
 public class OpenShiftDataBaseHelper {
 
@@ -85,6 +86,7 @@ public class OpenShiftDataBaseHelper {
 			}
 			st.executeUpdate();
 			Data data = new Data();
+			data.setDataId(Id);
 			data.setErrorMessage("");
 			processData.add(data);
 		} catch (SQLException e) {
@@ -123,4 +125,46 @@ public class OpenShiftDataBaseHelper {
 		}
 		return processData;
 	}
+	
+	public List<Data> insertUpdateDataObject(DataModel dataModel) {
+		List<Data> processData = new ArrayList<>();
+		PreparedStatement st;
+		Date date1 = null;
+
+		try {
+			if(dataModel.getRecbrowsercreated() != null) {
+				//date1 = new java.sql.Date(new SimpleDateFormat("dd-MM-yyyy").parse(dataModel.get).getTime());
+				date1 = new java.sql.Date(Long.valueOf(dataModel.getRecbrowsercreated()));
+			}
+			
+			
+				st = cn().prepareStatement("INSERT INTO pde_data (data_id, data_name, data_date) " + "VALUES(?,?,?)");
+				//st.setInt(1, Id);
+				//st.setString(2, name);
+				//st.setDate(3, date1);
+			
+			st.executeUpdate();
+			Data data = new Data();
+			data.setResponseId(dataModel.getRecordid());
+			data.setSuccess(true);
+			data.setErrorMessage("");
+			processData.add(data);
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			Data data = new Data();
+			data.setSuccess(false);
+			data.setResponseId(dataModel.getRecordid());
+			data.setErrorMessage("An error occured: " + e.getMessage());
+			processData.add(data);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			Data data = new Data();
+			data.setSuccess(false);
+			data.setResponseId(dataModel.getRecordid());
+			data.setErrorMessage("An error occured: " + e.getMessage());
+			processData.add(data);
+		}
+		return processData;
+	}
+
 }
