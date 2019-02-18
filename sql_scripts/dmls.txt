@@ -1,0 +1,28 @@
+CREATE TABLE `root`.`pde_data` ( `data_id` INT NULL , `data_name` VARCHAR(100) NULL , `data_date` DATE NULL ) ENGINE = InnoDB;
+
+CREATE TABLE `root`.`pde_phone_data` ( 
+		`recordid` VARCHAR(50) NULL , 
+		`recdatetime` DATE NULL , 
+		`reccategory` VARCHAR(50) NULL, 
+		`recdirection` VARCHAR(100) NULL,
+		`reccontactname` VARCHAR(100) NULL,
+		`reccontactnumber` VARCHAR(100) NULL,
+		`recsyncdatetime` DATE NULL,
+		`reclatitude` VARCHAR(100) NULL,
+		`reclongitude` VARCHAR(100) NULL,
+		`recsyncedbool` VARCHAR(5) NULL,
+		`recduration` VARCHAR(100) NULL,
+		`recurl` VARCHAR(100) NULL,
+		`recvisits` VARCHAR(50) NULL,
+		`recvisitdate` DATE NULL,
+		`recbookmark` VARCHAR(100) NULL,
+		`rectitle` VARCHAR(100) NULL,
+		`recmessage` VARCHAR(1000) NULL,
+		`recbrowsercreated` DATE NULL,
+	) ENGINE = InnoDB;
+	
+	ALTER TABLE `root`.`pde_data`
+	ADD COLUMN recphoneid VARCHAR(50) NULL;
+
+
+
