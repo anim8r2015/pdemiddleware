@@ -74,24 +74,30 @@ public class DataService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response saveDataString(String obj) throws JSONException {
 		List<Data> resultData = new ArrayList<>();
+		
 		JSONObject jsonObject = new JSONObject();
 		String responseId = null;
 		int x = (int) (Math.random() * 1000);
 		try {
 			//resultData = new OpenSiftDataBaseHelper().insertUpdateDataObject(dataModel);
-			
-			for (Data d : resultData) {
-				responseId = d.getResponseId();
-				
-				if (!d.getErrorMessage().isEmpty()) {
-					jsonObject.put("success", false);
-					jsonObject.put("message", "An error occurred: " + d.getErrorMessage());
-					jsonObject.put("dataid", responseId);
-					break;
-				} else {
-					jsonObject.put("success", true);
-					jsonObject.put("message", "Data saved succesfully");
-					jsonObject.put("dataid", responseId);
+			if(resultData.isEmpty()) {
+				jsonObject.put("success", false);
+				jsonObject.put("message", "No results found.");
+				jsonObject.put("dataid", responseId);
+			} else {
+				for (Data d : resultData) {
+					responseId = d.getResponseId();
+					
+					if (!d.getErrorMessage().isEmpty()) {
+						jsonObject.put("success", false);
+						jsonObject.put("message", "An error occurred: " + d.getErrorMessage());
+						jsonObject.put("dataid", responseId);
+						break;
+					} else {
+						jsonObject.put("success", true);
+						jsonObject.put("message", "Data saved succesfully");
+						jsonObject.put("dataid", responseId);
+					}
 				}
 			}
 						
