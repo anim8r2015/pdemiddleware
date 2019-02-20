@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
+
 import co.ke.predictiveanalytics.helpers.DataBaseHelper;
 import co.ke.predictiveanalytics.helpers.OpenShiftDataBaseHelper;
 import co.ke.predictiveanalytics.model.Data;
@@ -23,17 +24,17 @@ import co.ke.predictiveanalytics.model.DataModel;
 @Path("/service")
 public class DataService {
 
+		
 	@Path("/savebatch")
 	@POST
-	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response saveData(DataModel dataModel) throws JSONException {
+	public Response saveData(JSONObject obj) throws JSONException {
 		List<Data> resultData = new ArrayList<>();
-		JSONObject jsonObject = new JSONObject();
+		JSONObject jsonObject = obj;
 		String responseId = null;
 		int x = (int) (Math.random() * 1000);
 		try {
-			resultData = new OpenShiftDataBaseHelper().insertUpdateDataObject(dataModel);
+			//resultData = new OpenSiftDataBaseHelper().insertUpdateDataObject(dataModel);
 			
 			for (Data d : resultData) {
 				responseId = d.getResponseId();
@@ -66,6 +67,49 @@ public class DataService {
 		return Response.status(200).entity(result).build();
 	}
 
+	//save batch string
+	@Path("/savebatchstr")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response saveDataString(String obj) throws JSONException {
+		List<Data> resultData = new ArrayList<>();
+		JSONObject jsonObject = new JSONObject(obj);
+		String responseId = null;
+		int x = (int) (Math.random() * 1000);
+		try {
+			//resultData = new OpenSiftDataBaseHelper().insertUpdateDataObject(dataModel);
+			
+			for (Data d : resultData) {
+				responseId = d.getResponseId();
+				
+				if (!d.getErrorMessage().isEmpty()) {
+					jsonObject.put("success", false);
+					jsonObject.put("message", "An error occurred: " + d.getErrorMessage());
+					jsonObject.put("dataid", responseId);
+					break;
+				} else {
+					jsonObject.put("success", true);
+					jsonObject.put("message", "Data saved succesfully");
+					jsonObject.put("dataid", responseId);
+				}
+			}
+						
+		} catch (JSONException j) {
+			jsonObject.put("success", false);
+			jsonObject.put("message", "JSON error: " + j.getMessage());
+			jsonObject.put("dataid", responseId);
+			
+			j.printStackTrace();
+		} catch (Exception e) {
+			jsonObject.put("success", false);
+			jsonObject.put("message", "Error updating data. " + e.getMessage());
+			jsonObject.put("dataid", responseId);
+		}
+
+		String result = "" + jsonObject;
+		return Response.status(200).entity(result).build();
+	}
+	
 	
 	@Path("save/{b}/{c}")
 	@POST
