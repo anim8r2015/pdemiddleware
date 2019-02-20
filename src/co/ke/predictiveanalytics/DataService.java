@@ -71,6 +71,7 @@ public class DataService {
 	@Path("/savebatchstr")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response saveDataString(String obj) throws JSONException {
 		List<Data> resultData = new ArrayList<>();
 		JSONObject jsonObject = new JSONObject(obj);
