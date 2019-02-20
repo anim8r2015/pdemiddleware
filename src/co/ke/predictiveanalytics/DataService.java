@@ -74,7 +74,7 @@ public class DataService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response saveDataString(String obj) throws JSONException {
 		List<Data> resultData = new ArrayList<>();
-		JSONObject jsonObject = new JSONObject(obj);
+		JSONObject jsonObject = new JSONObject();
 		String responseId = null;
 		int x = (int) (Math.random() * 1000);
 		try {
