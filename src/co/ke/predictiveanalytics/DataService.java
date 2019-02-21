@@ -83,7 +83,7 @@ public class DataService {
 			if(resultData.isEmpty()) {
 				jsonObject.put("success", false);
 				jsonObject.put("message", "No results found.");
-				jsonObject.put("dataid", responseId);
+				jsonObject.put("dataid", "0");
 			} else {
 				for (Data d : resultData) {
 					responseId = d.getResponseId();
