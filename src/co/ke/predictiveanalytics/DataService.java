@@ -25,48 +25,6 @@ import co.ke.predictiveanalytics.model.DataModel;
 @Path("/service")
 public class DataService {
 
-		
-	@Path("/savebatch")
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response saveData(JSONObject obj) throws JSONException {
-		List<Data> resultData = new ArrayList<>();
-		JSONObject jsonObject = obj;
-		String responseId = null;
-		int x = (int) (Math.random() * 1000);
-		try {
-			//resultData = new OpenSiftDataBaseHelper().insertUpdateDataObject(dataModel);
-			
-			for (Data d : resultData) {
-				responseId = d.getResponseId();
-				
-				if (!d.getErrorMessage().isEmpty()) {
-					jsonObject.put("success", false);
-					jsonObject.put("message", "An error occurred: " + d.getErrorMessage());
-					jsonObject.put("dataid", responseId);
-					break;
-				} else {
-					jsonObject.put("success", true);
-					jsonObject.put("message", "Data saved succesfully");
-					jsonObject.put("dataid", responseId);
-				}
-			}
-						
-		} catch (JSONException j) {
-			jsonObject.put("success", false);
-			jsonObject.put("message", "JSON error: " + j.getMessage());
-			jsonObject.put("dataid", responseId);
-			
-			j.printStackTrace();
-		} catch (Exception e) {
-			jsonObject.put("success", false);
-			jsonObject.put("message", "Error updating data. " + e.getMessage());
-			jsonObject.put("dataid", responseId);
-		}
-
-		String result = "" + jsonObject;
-		return Response.status(200).entity(result).build();
-	}
 
 	//save batch string
 	@Path("/savebatchstr")
@@ -79,7 +37,7 @@ public class DataService {
 		JSONObject receivedData = new JSONObject(obj);
 		JSONHelper jh = new JSONHelper();
 		DataModel data = jh.convertJSONToModel(receivedData);
-		String responseId = null;
+		String responseId = "0";
 		
 		int x = (int) (Math.random() * 1000);
 		try {
