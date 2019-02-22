@@ -17,6 +17,7 @@ import org.json.JSONArray;
 
 
 import co.ke.predictiveanalytics.helpers.DataBaseHelper;
+import co.ke.predictiveanalytics.helpers.JSONHelper;
 import co.ke.predictiveanalytics.helpers.OpenShiftDataBaseHelper;
 import co.ke.predictiveanalytics.model.Data;
 import co.ke.predictiveanalytics.model.DataModel;
@@ -74,12 +75,15 @@ public class DataService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response saveDataString(String obj) throws JSONException {
 		List<Data> resultData = new ArrayList<>();
-		
 		JSONObject jsonObject = new JSONObject();
+		JSONObject receivedData = new JSONObject(obj);
+		JSONHelper jh = new JSONHelper();
+		DataModel data = jh.convertJSONToModel(receivedData);
 		String responseId = null;
+		
 		int x = (int) (Math.random() * 1000);
 		try {
-			//resultData = new OpenSiftDataBaseHelper().insertUpdateDataObject(dataModel);
+			resultData = new OpenShiftDataBaseHelper().insertUpdateDataObject(data);
 			if(resultData.isEmpty()) {
 				jsonObject.put("success", false);
 				jsonObject.put("message", "No results found.");
@@ -197,11 +201,11 @@ public class DataService {
 
 	// service to do database operations e.g create, alter or drop table; add, drop
 	// or modify column on OpenShift
-	@Path("/dml")
+	@Path("/ddl")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response doDML(String data) {
+	public Response doDDL(String data) {
 		boolean status = true;
 		String errorMessage = null;
 		List<Data> resultData = new ArrayList<>();
@@ -209,7 +213,7 @@ public class DataService {
 		JSONObject dataPosted = new JSONObject(data);
 		String queryString = dataPosted.getString("data");
 		try {
-			resultData = new OpenShiftDataBaseHelper().doDML(queryString.trim());
+			resultData = new OpenShiftDataBaseHelper().doDDL(queryString.trim());
 			for (Data d : resultData) {
 				if (!d.getErrorMessage().isEmpty()) {
 					status = false;

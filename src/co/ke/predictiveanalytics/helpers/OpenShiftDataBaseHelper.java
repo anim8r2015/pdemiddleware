@@ -103,7 +103,7 @@ public class OpenShiftDataBaseHelper {
 		return processData;
 	}
 	
-	public List<Data> doDML(String transaction) {
+	public List<Data> doDDL(String transaction) {
 		List<Data> processData = new ArrayList<>();
 		PreparedStatement st;
 
