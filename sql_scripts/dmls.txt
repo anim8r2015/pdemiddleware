@@ -18,7 +18,7 @@ CREATE TABLE `root`.`pde_phone_data` (
 		`recbookmark` VARCHAR(100) NULL,
 		`rectitle` VARCHAR(100) NULL,
 		`recmessage` VARCHAR(1000) NULL,
-		`recbrowsercreated` DATE NULL,
+		`recbrowsercreated` DATE NULL
 	) ENGINE = InnoDB;
 	
 	ALTER TABLE `root`.`pde_data`

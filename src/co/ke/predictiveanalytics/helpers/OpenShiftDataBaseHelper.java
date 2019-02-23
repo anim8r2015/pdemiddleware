@@ -137,20 +137,29 @@ public class OpenShiftDataBaseHelper {
 
 		try {
 			if(dataModel.getRecbrowsercreated() != null) {
-				//date1 = new java.sql.Date(new SimpleDateFormat("dd-MM-yyyy").parse(dataModel.get).getTime());
-				dateBrowserCreated = convertLongtoDate(dataModel.getRecbrowsercreated());
+				if (dataModel.getRecbrowsercreated().length() > 0) {
+				
+					//date1 = new java.sql.Date(new SimpleDateFormat("dd-MM-yyyy").parse(dataModel.get).getTime());
+					dateBrowserCreated = convertLongtoDate(dataModel.getRecbrowsercreated());
+				}
 			}
 			
 			if(dataModel.getRecdatetime() != null) {
-				dateRecDateTime = convertLongtoDate(dataModel.getRecdatetime());
+				if (dataModel.getRecdatetime().length() > 0) {
+					dateRecDateTime = convertLongtoDate(dataModel.getRecdatetime());
+				}
 			}
 			
 			if(dataModel.getRecsyncdatetime() != null) {
-				dateSyncDateTime = convertLongtoDate(dataModel.getRecsyncdatetime());
+				if (dataModel.getRecsyncdatetime().length() > 0) {
+					dateSyncDateTime = convertLongtoDate(dataModel.getRecsyncdatetime());
+				}
 			}
 			
 			if(dataModel.getRecvisitdate() != null) {
-				dateRecVisitDateTime = convertLongtoDate(dataModel.getRecvisitdate());
+				if (dataModel.getRecvisitdate().length() > 0) {
+					dateRecVisitDateTime = convertLongtoDate(dataModel.getRecvisitdate());
+				}
 			}
 			
 			st = cn().prepareStatement("INSERT INTO pde_phone_data (recordid, recdatetime, reccategory, "
