@@ -30,6 +30,7 @@ public class JSONHelper {
 		dm.setRectitle(j.getString("rectitle"));
 		dm.setRecmessage(j.getString("recmessage"));
 		dm.setRecbrowsercreated(j.getString("recbrowsercreated"));
+		dm.setRecphoneid(j.getString("recphoneid"));
 		return dm;
 	}
 

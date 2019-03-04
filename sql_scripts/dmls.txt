@@ -21,7 +21,7 @@ CREATE TABLE `root`.`pde_phone_data` (
 		`recbrowsercreated` DATE NULL
 	) ENGINE = InnoDB;
 	
-	ALTER TABLE `root`.`pde_data`
+	ALTER TABLE `root`.`pde_phone_data`
 	ADD COLUMN recphoneid VARCHAR(50) NULL;
 
 

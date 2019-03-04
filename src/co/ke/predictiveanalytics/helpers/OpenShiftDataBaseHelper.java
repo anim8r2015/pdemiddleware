@@ -43,21 +43,50 @@ public class OpenShiftDataBaseHelper {
 
 	public List<Data> getTableData() {
 		List<Data> dataList = new ArrayList<>();
+		List<DataModel> dataModelList = new ArrayList<>();
+		String stmt = "SELECT recordid, recdatetime, reccategory, recdirection," +
+				"reccontactname, reccontactnumber, recsyncdatetime, reclatitude," +
+				"reclongitude, recsyncedbool, recduration, recurl, recvisits," +
+				"recvisitdate, recbookmark, rectitle, recmessage, recbrowsercreated," +
+				"recphoneid from pde_phone_data";
 		try {
 			PreparedStatement st = null;
 			ResultSet rs = null;
 
-			st = cn().prepareStatement("SELECT * FROM pde_data");
+			st = cn().prepareStatement(stmt);
 			rs = st.executeQuery();
-
+			
+			
 			while (rs.next()) {
-				Data data = new Data();
-				data.setDataId(rs.getInt("data_id"));
-				data.setDataName(rs.getString("data_name"));
-				data.setDataDate(rs.getDate("data_date"));
-				data.setErrorMessage("");
-				dataList.add(data);
+				DataModel dm = new DataModel();	
+				dm.setRecordid(rs.getString("recordid"));
+				dm.setRecdatetime(rs.getString("recdatetime"));
+				dm.setReccategory(rs.getString("reccategory"));
+				dm.setRecdirection(rs.getString("recdirection"));
+				dm.setReccontactname(rs.getString("reccontactname"));
+				dm.setReccontactnumber(rs.getString("reccontactnumber"));
+				dm.setRecsyncdatetime(rs.getString("recsyncdatetime"));
+				dm.setReclatitude(rs.getString("reclatitude"));
+				dm.setReclongitude(rs.getString("reclongitude"));
+				dm.setRecsyncedbool(rs.getString("recsyncedbool"));
+				dm.setRecduration(rs.getString("recduration"));
+				dm.setRecurl(rs.getString("recurl"));
+				dm.setRecvisits(rs.getString("recvisits"));
+				dm.setRecvisitdate(rs.getString("recvisitdate"));
+				dm.setRecbookmark(rs.getString("recbookmark"));
+				dm.setRectitle(rs.getString("rectitle"));
+				dm.setRecmessage(rs.getString("recmessage"));
+				dm.setRecbrowsercreated(rs.getString("recbrowsercreated"));
+				dm.setRecphoneid(rs.getString("recphoneid"));
+				dataModelList.add(dm);
+				
 			}
+			Data data = new Data();
+			data.setAllData(dataModelList);
+			
+			data.setErrorMessage("");
+			dataList.add(data);
+			rs.close();
 
 		} catch (Exception e) {
 			Data data = new Data();
@@ -65,42 +94,6 @@ public class OpenShiftDataBaseHelper {
 			dataList.add(data);
 		}
 		return dataList;
-	}
-
-	public List<Data> insertUpdateData(String transaction, int Id, String name, String date) {
-		List<Data> processData = new ArrayList<>();
-		PreparedStatement st;
-		Date date1 = null;
-
-		try {
-			date1 = new java.sql.Date(new SimpleDateFormat("dd-MM-yyyy").parse(date).getTime());
-			if (transaction.equalsIgnoreCase("A")) {
-				st = cn().prepareStatement("INSERT INTO pde_data (data_id, data_name, data_date) " + "VALUES(?,?,?)");
-				st.setInt(1, Id);
-				st.setString(2, name);
-				st.setDate(3, date1);
-			} else { // edit
-				st = cn().prepareStatement(
-						"UPDATE pde_data SET data_name = '" + name + "', data_date = " + date + " WHERE data_id = " +
-								Id + "");
-			}
-			st.executeUpdate();
-			Data data = new Data();
-			data.setDataId(Id);
-			data.setErrorMessage("");
-			processData.add(data);
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-			Data data = new Data();
-			data.setErrorMessage("An error occured: " + e.getMessage());
-			processData.add(data);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			Data data = new Data();
-			data.setErrorMessage("An error occured: " + e.getMessage());
-			processData.add(data);
-		}
-		return processData;
 	}
 	
 	public List<Data> doDDL(String transaction) {

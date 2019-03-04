@@ -35,30 +35,59 @@ public class DataBaseHelper {
 
 	public List<Data> getTableData() {
 		List<Data> dataList = new ArrayList<>();
+		List<DataModel> dataModelList = new ArrayList<>();
+		String stmt = "SELECT recordid, recdatetime, reccategory, recdirection," +
+				"reccontactname, reccontactnumber, recsyncdatetime, reclatitude," +
+				"reclongitude, recsyncedbool, recduration, recurl, recvisits," +
+				"recvisitdate, recbookmark, rectitle, recmessage, recbrowsercreated," +
+				"recphoneid from pde_phone_data";
 		try {
 			PreparedStatement st = null;
 			ResultSet rs = null;
 
-			st = cn().prepareStatement("SELECT * FROM pde_data");
+			st = cn().prepareStatement(stmt);
 			rs = st.executeQuery();
-
+			
+			
 			while (rs.next()) {
-				Data data = new Data();
-				data.setDataId(rs.getInt("data_id"));
-				data.setDataName(rs.getString("data_name"));
-				data.setDataDate(rs.getDate("data_date"));
-				data.setErrorMessage("");
-				dataList.add(data);
+				DataModel dm = new DataModel();	
+				dm.setRecordid(rs.getString("recordid"));
+				dm.setRecdatetime(rs.getString("recdatetime"));
+				dm.setReccategory(rs.getString("reccategory"));
+				dm.setRecdirection(rs.getString("recdirection"));
+				dm.setReccontactname(rs.getString("reccontactname"));
+				dm.setReccontactnumber(rs.getString("reccontactnumber"));
+				dm.setRecsyncdatetime(rs.getString("recsyncdatetime"));
+				dm.setReclatitude(rs.getString("reclatitude"));
+				dm.setReclongitude(rs.getString("reclongitude"));
+				dm.setRecsyncedbool(rs.getString("recsyncedbool"));
+				dm.setRecduration(rs.getString("recduration"));
+				dm.setRecurl(rs.getString("recurl"));
+				dm.setRecvisits(rs.getString("recvisits"));
+				dm.setRecvisitdate(rs.getString("recvisitdate"));
+				dm.setRecbookmark(rs.getString("recbookmark"));
+				dm.setRectitle(rs.getString("rectitle"));
+				dm.setRecmessage(rs.getString("recmessage"));
+				dm.setRecbrowsercreated(rs.getString("recbrowsercreated"));
+				dm.setRecphoneid(rs.getString("recphoneid"));
+				dataModelList.add(dm);
+				
 			}
+			Data data = new Data();
+			data.setAllData(dataModelList);
+			
+			data.setErrorMessage("");
+			dataList.add(data);
+			rs.close();
 
 		} catch (Exception e) {
 			Data data = new Data();
-			data.setErrorMessage("Error while processing: " + e.getMessage());
+			data.setErrorMessage(e.getMessage());
 			dataList.add(data);
-			e.printStackTrace();
 		}
 		return dataList;
 	}
+
 
 	public List<Data> insertUpdateData(String transaction, int Id, String name, String date) {
 		List<Data> processData = new ArrayList<>();
@@ -78,9 +107,11 @@ public class DataBaseHelper {
 								Id + "");
 			}
 			st.executeUpdate();
+			st.close();
 			Data data = new Data();
 			data.setErrorMessage("");
 			processData.add(data);
+			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			Data data = new Data();
@@ -91,6 +122,7 @@ public class DataBaseHelper {
 			Data data = new Data();
 			data.setErrorMessage("An error occured: " + e.getMessage());
 			processData.add(data);
+			
 		}
 		return processData;
 	}
