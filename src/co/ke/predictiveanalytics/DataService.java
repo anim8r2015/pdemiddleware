@@ -101,8 +101,18 @@ public class DataService {
 				}
 			}
 			
+			for (Data d : resultData) {
+				if (!d.getAllData().isEmpty()) {
+					jsonObject.put("success", "true");
+					jsonObject.put("data", d.getAllData());
+					break;
+				} else {
+					jsonObject.put("success", "false");
+					jsonObject.put("message", "No data was found. " + d.getErrorMessage());
+				}
+			}
+			
 			jsonObject.put("status", "completed");
-			jsonObject.put("data", resultData);
 
 		} catch (JSONException j) {
 			jsonObject.put("success", "false");
@@ -221,6 +231,7 @@ public class DataService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response retrieveLocal(String data) {
 		List<Data> resultData = new ArrayList<>();
+		
 		JSONObject jsonObject = new JSONObject();
 		//JSONObject dataPosted = new JSONObject(data);
 		//String queryString = dataPosted.getString("data");
@@ -235,9 +246,18 @@ public class DataService {
 					break;
 				}
 			}
-			
+				
+			for (Data d : resultData) {
+				if (!d.getAllData().isEmpty()) {
+					jsonObject.put("success", "true");
+					jsonObject.put("data", d.getAllData());
+					break;
+				} else {
+					jsonObject.put("success", "false");
+					jsonObject.put("message", "No data was found. " + d.getErrorMessage());
+				}
+			}
 			jsonObject.put("status", "completed");
-			jsonObject.put("data", resultData);
 
 		} catch (JSONException j) {
 			jsonObject.put("success", "false");
