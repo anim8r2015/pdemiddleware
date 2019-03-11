@@ -203,4 +203,35 @@ public class OpenShiftDataBaseHelper {
 		}
 		return processData;
 	}
+	
+	public List<Data> deleteData(String transactionId) {
+		List<Data> processData = new ArrayList<>();
+		PreparedStatement st;
+	
+		try {
+			
+			st = cn().prepareStatement("DELETE FROM pde_phone_data WHERE recordid = " + transactionId + "");
+			
+			st.executeUpdate();
+			st.close();
+			Data data = new Data();
+			data.setResponseId(transactionId);
+			data.setErrorMessage("");
+			processData.add(data);
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			Data data = new Data();
+			data.setErrorMessage("An error occured: " + e.getMessage());
+			processData.add(data);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			Data data = new Data();
+			data.setErrorMessage("An error occured: " + e.getMessage());
+			processData.add(data);
+			
+		}
+		return processData;
+	}
+	
 }

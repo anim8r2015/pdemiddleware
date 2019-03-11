@@ -275,4 +275,86 @@ public class DataService {
 		return Response.status(200).entity(result).build();
 	}
 		
+	
+	//retrieve local
+	@Path("/deletelocal/{dataId}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteRecordLocal(@PathParam("dataId") String dataId) {
+		List<Data> resultData = new ArrayList<>();
+		
+		JSONObject jsonObject = new JSONObject();
+		//JSONObject dataPosted = new JSONObject(data);
+		//String queryString = dataPosted.getString("data");
+		try {
+			resultData = new DataBaseHelper()
+					.deleteData(dataId);
+			
+			for (Data d : resultData) {
+				if (!d.getErrorMessage().isEmpty()) {
+					jsonObject.put("success", "false");
+					jsonObject.put("message", "An error occurred: " + d.getErrorMessage());
+					break;
+				}
+			}
+			jsonObject.put("success", "true");
+			jsonObject.put("data", resultData);
+			jsonObject.put("status", "completed");
+
+		} catch (JSONException j) {
+			jsonObject.put("success", "false");
+			jsonObject.put("message", "JSON error: " + j.getMessage());
+			jsonObject.put("status", "aborted");
+			j.printStackTrace();
+
+		} catch (Exception e) {
+			jsonObject.put("success", "false");
+			jsonObject.put("message", "Error updating data. " + e.getMessage());
+			jsonObject.put("status", "aborted");
+			e.printStackTrace();
+		}
+		String result = "" + jsonObject;
+		return Response.status(200).entity(result).build();
+	}
+	
+	//retrieve local
+	@Path("/delete/{dataId}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteRecord(@PathParam("dataId") String dataId) {
+		List<Data> resultData = new ArrayList<>();
+		
+		JSONObject jsonObject = new JSONObject();
+		//JSONObject dataPosted = new JSONObject(data);
+		//String queryString = dataPosted.getString("data");
+		try {
+			resultData = new DataBaseHelper()
+					.deleteData(dataId);
+			
+			for (Data d : resultData) {
+				if (!d.getErrorMessage().isEmpty()) {
+					jsonObject.put("success", "false");
+					jsonObject.put("message", "An error occurred: " + d.getErrorMessage());
+					break;
+				}
+			}
+			jsonObject.put("success", "true");
+			jsonObject.put("data", resultData);
+			jsonObject.put("status", "completed");
+
+		} catch (JSONException j) {
+			jsonObject.put("success", "false");
+			jsonObject.put("message", "JSON error: " + j.getMessage());
+			jsonObject.put("status", "aborted");
+			j.printStackTrace();
+
+		} catch (Exception e) {
+			jsonObject.put("success", "false");
+			jsonObject.put("message", "Error updating data. " + e.getMessage());
+			jsonObject.put("status", "aborted");
+			e.printStackTrace();
+		}
+		String result = "" + jsonObject;
+		return Response.status(200).entity(result).build();
+	}
 }
