@@ -210,7 +210,7 @@ public class OpenShiftDataBaseHelper {
 	
 		try {
 			
-			st = cn().prepareStatement("DELETE FROM pde_phone_data WHERE recordid = " + transactionId + "");
+			st = cn().prepareStatement("DELETE FROM pde_phone_data WHERE recordid = '" + transactionId + "'");
 			
 			st.executeUpdate();
 			st.close();
