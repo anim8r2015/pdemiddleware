@@ -6,7 +6,7 @@ $(document).ready(function (){
    $('#phonedata').DataTable({
       lengthChange: false,
       ajax: {
-          url: "http://localhost:8080/PredictiveAnalyticsApp/data/service/retrievelocal"
+          url: "http://jws-app-pdemidleware.7e14.starter-us-west-2.openshiftapps.com/data/service/retrieve"
       },
       columns: [
 			{ data: "recordid",  "defaultContent": ""},
