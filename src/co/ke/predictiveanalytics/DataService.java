@@ -328,7 +328,7 @@ public class DataService {
 		//JSONObject dataPosted = new JSONObject(data);
 		//String queryString = dataPosted.getString("data");
 		try {
-			resultData = new DataBaseHelper()
+			resultData = new OpenShiftDataBaseHelper()
 					.deleteData(dataId);
 			
 			for (Data d : resultData) {
