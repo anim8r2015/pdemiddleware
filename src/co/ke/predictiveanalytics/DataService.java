@@ -292,12 +292,10 @@ public class DataService {
 			
 			for (Data d : resultData) {
 				if (!d.getErrorMessage().isEmpty()) {
-					jsonObject.put("success", "false");
 					jsonObject.put("message", "An error occurred: " + d.getErrorMessage());
 					break;
 				}
 			}
-			jsonObject.put("success", "true");
 			jsonObject.put("data", resultData);
 			jsonObject.put("status", "completed");
 
@@ -332,13 +330,12 @@ public class DataService {
 					.deleteData(dataId);
 			
 			for (Data d : resultData) {
-				if (!d.getErrorMessage().isEmpty()) {
-					jsonObject.put("success", "false");
+				if (!d.getErrorMessage().isEmpty()) {		
 					jsonObject.put("message", "An error occurred: " + d.getErrorMessage());
 					break;
 				}
 			}
-			jsonObject.put("success", "true");
+			
 			jsonObject.put("data", resultData);
 			jsonObject.put("status", "completed");
 
