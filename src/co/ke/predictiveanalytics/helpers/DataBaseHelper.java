@@ -231,13 +231,16 @@ public class DataBaseHelper {
 		PreparedStatement st;
 	
 		try {
-			
-			st = cn().prepareStatement("DELETE FROM pde_phone_data WHERE recordid = '" + transactionId + "'");
-			
+			if (String.valueOf(transactionId).equals("0")){
+				st = cn().prepareStatement("DELETE FROM pde_phone_data");
+			} else {
+				st = cn().prepareStatement("DELETE FROM pde_phone_data WHERE recordid = '" + transactionId + "'");
+			}
 			st.executeUpdate();
 			st.close();
 			Data data = new Data();
 			data.setResponseId(transactionId);
+			data.setSuccess(true);
 			data.setErrorMessage("");
 			processData.add(data);
 			
