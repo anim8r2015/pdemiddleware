@@ -9,7 +9,7 @@ public class DBInfo {
 	static String mySQLdbURL = "jdbc:mysql://" + host + ":" + port + "/"
 			+ DBname;
 
-	static String user = "pde_db";
+	static String user = "pde";
 	static String password = "pde_db123*";
 	
 	static String driver = "com.mysql.cj.jdbc.Driver";
