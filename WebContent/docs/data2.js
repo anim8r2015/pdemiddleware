@@ -1,12 +1,14 @@
 /**
  * 
+ http://jws-app-pdemiddleware.7e14.starter-us-west-2.openshiftapps.com/data/service/retrieve
+ 
  */
 
 $(document).ready(function (){
    $('#phonedata').DataTable({
       lengthChange: false,
       ajax: {
-          url: "http://jws-app-pdemidleware.7e14.starter-us-west-2.openshiftapps.com/data/service/retrieve"
+          url: "http://jws-app-pdemiddleware.7e14.starter-us-west-2.openshiftapps.com/data/service/retrieve"
       },
       columns: [
 			{ data: "recordid",  "defaultContent": ""},
